@@ -250,7 +250,10 @@ main(int argc, char *argv[])
     Term *term;
     struct winsize size;
 
-    ioctl(0, TIOCGWINSZ, &size);
+    if (ioctl(0, TIOCGWINSZ, &size) == -1) {
+        size.ws_row = 80;
+        size.ws_col = 80;
+    }
     set_defaults(&size);
     while ((opt = getopt(argc, argv, "o:m:d:l:f:h:w:c:qv")) != -1) {
         switch (opt) {
